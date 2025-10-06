@@ -5,7 +5,7 @@ import os
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
 # 1. Definir o caminho para o seu dataset local
-base_dir = r"C:\Users\yguin\OneDrive\Documentos\GitHub\UNESPAR\IA\CNNs\ClassificadorDeVeiculos\dataset"
+base_dir = r"C:\Users\yguin\OneDrive\Documentos\GitHub\CNN\CNNs\ClassificadorDeVeiculos\dataset"
 
 # Validar se o caminho existe para evitar erros
 if not os.path.exists(base_dir):
