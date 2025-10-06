@@ -20,7 +20,7 @@ BATCH_SIZE = 32
 VALIDATION_SPLIT = 0.2
 
 # Cria o conjunto de dados para TREINAMENTO (80% dos dados)
-# divisão  usando validation_split.
+# divisão usando validation_split.
 train_ds = tf.keras.utils.image_dataset_from_directory(
     base_dir,
     validation_split=VALIDATION_SPLIT,
@@ -52,18 +52,18 @@ AUTOTUNE = tf.data.AUTOTUNE
 train_ds = train_ds.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
 validation_ds = validation_ds.cache().prefetch(buffer_size=AUTOTUNE)
 
-# Arquitetura da Rede Neural Convolucional (LeNet-5)
+# Arquitetura da Rede Neural Convolucional (LeNet-5 com ativação ReLU)
 model = tf.keras.Sequential([
     # Normaliza os pixels da imagem para o intervalo [0, 1].
     tf.keras.layers.Rescaling(1./255, input_shape=(IMG_SIZE[0], IMG_SIZE[1], 3)),
     
     # 1ª Convolução: Extrai 6 tipos de características da imagem.
-    tf.keras.layers.Conv2D(6, kernel_size=(5, 5), activation='sigmoid', padding='same'),
+    tf.keras.layers.Conv2D(6, kernel_size=(5, 5), activation='relu', padding='same'),
     # 1º Pooling: Reduz o tamanho da imagem, mantendo as características importantes.
     tf.keras.layers.AveragePooling2D(pool_size=(2, 2)),
     
     # 2ª Convolução: Extrai 16 características mais complexas.
-    tf.keras.layers.Conv2D(16, kernel_size=(5, 5), activation='sigmoid'),
+    tf.keras.layers.Conv2D(16, kernel_size=(5, 5), activation='relu'),
     # 2º Pooling: Reduz a dimensionalidade novamente.
     tf.keras.layers.AveragePooling2D(pool_size=(2, 2)),
     
@@ -71,9 +71,9 @@ model = tf.keras.Sequential([
     tf.keras.layers.Flatten(),
     
     # 1ª Camada Densa: Combina as características para aprender padrões (120 neurônios).
-    tf.keras.layers.Dense(120, activation='sigmoid'),
+    tf.keras.layers.Dense(120, activation='relu'),
     # 2ª Camada Densa: Refina os padrões aprendidos (84 neurônios).
-    tf.keras.layers.Dense(84, activation='sigmoid'),
+    tf.keras.layers.Dense(84, activation='relu'),
     
     # Camada de Saída: Classifica a imagem na categoria mais provável.
     tf.keras.layers.Dense(NUM_CLASSES, activation='softmax')
