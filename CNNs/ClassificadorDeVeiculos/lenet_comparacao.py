@@ -81,7 +81,7 @@ model = tf.keras.Sequential([
 
 # <<< ALTERAÇÃO AQUI: Definindo explicitamente a taxa de aprendizado >>>
 # Cria o otimizador Adam com a taxa de aprendizado desejada.
-optimizer = tf.keras.optimizers.Adam(learning_rate=0.01)
+optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
 
 # Compila o modelo, passando o otimizador criado.
 model.compile(optimizer=optimizer,

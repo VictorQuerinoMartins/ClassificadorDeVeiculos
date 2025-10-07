@@ -1,0 +1,2 @@
+Resultados do Auto-Tuning para AlexNet - Etapa 1: Taxa de Aprendizagem
+============================================================
