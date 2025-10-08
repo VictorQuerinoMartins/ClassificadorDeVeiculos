@@ -19,21 +19,21 @@ LONG_EPOCHS = 21
 def create_model(num_classes, learning_rate=0.001):
     model = tf.keras.Sequential([
        
-        tf.keras.layers.Rescaling(1./255, input_shape=(IMG_SIZE[0], IMG_SIZE[1], 3)), # Normaliza os pixels de 0-255 para 0-1
+        tf.keras.layers.Rescaling(1./255, input_shape=(IMG_SIZE[0], IMG_SIZE[1], 3)), # Normaliza os pixels 0,1
         
-        tf.keras.layers.Conv2D(32, 3, padding='same', activation='relu'), # Camada Convolucional 1: Encontra 32 padrões (features) na imagem
+        tf.keras.layers.Conv2D(32, 3, padding='same', activation='relu'),           #Encontra 32 padrões
       
-        tf.keras.layers.MaxPooling2D(),   # Camada de Agrupamento 1: Reduz o tamanho da imagem pela metade (resumo dos padrões)
+        tf.keras.layers.MaxPooling2D(),                                            # Reduz o tamanho da imagem pela metade 
 
-        tf.keras.layers.Conv2D(64, 3, padding='same', activation='relu'),        # Camada Convolucional 2: Encontra 64 padrões mais complexos
+        tf.keras.layers.Conv2D(64, 3, padding='same', activation='relu'),         # Encontra 64 padrões mais complexos
        
-        tf.keras.layers.MaxPooling2D(), # Camada de Agrupamento 2: Reduz o tamanho do mapa de padrões novamente
+        tf.keras.layers.MaxPooling2D(),                                          # Reduz o tamanho do mapa de padrões novamente
 
-        tf.keras.layers.Flatten(),# Camada de Achatamento: Junta todos os mapas de padrões em um vetor (para a parte 'densa')
+        tf.keras.layers.Flatten(),                                              # Junta todos em um vetor (para a parte 'densa')
 
-        tf.keras.layers.Dense(128, activation='relu'),  # Camada Densa 1 (Oculta): Combina as features aprendidas para fazer a classificação
+        tf.keras.layers.Dense(128, activation='relu'),                         # Combina as caracteristicas aprendidas para fazer a classificação
         
-        tf.keras.layers.Dense(num_classes, activation='softmax') # Camada Densa de Saída: Gera a probabilidade para cada uma das classes de veículos
+        tf.keras.layers.Dense(num_classes, activation='softmax')              # Gera a probabilidade 
     ])
     
     optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)

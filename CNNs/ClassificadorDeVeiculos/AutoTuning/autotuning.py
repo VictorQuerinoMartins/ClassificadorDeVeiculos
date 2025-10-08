@@ -1,6 +1,3 @@
-# -- coding: utf-8 --
-# ARQUIVO 1: TESTANDO A TAXA DE APRENDIZAGEM (VERSÃO RÁPIDA)
-
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
@@ -11,15 +8,14 @@ base_dir = r'C:\Users\yguin\OneDrive\Documentos\GitHub\UNESPAR\IA\CNNs\Classific
 if not os.path.exists(base_dir):
     raise FileNotFoundError(f"ERRO: O caminho '{base_dir}' nao foi encontrado.")
 
-# <<< MUDANÇA PARA MAIOR VELOCIDADE >>>: Imagens menores processam mais rápido.
+
 IMG_SIZE = (96, 96)
 VALIDATION_SPLIT = 0.2
 SEED = 123
 FIXED_BATCH_SIZE = 32
-# <<< MUDANÇA PARA MAIOR VELOCIDADE >>>: Menos épocas para um teste rápido de tendência.
+
 FIXED_EPOCHS = 5
 
-# --- FUNÇÕES AUXILIARES ---
 def create_model(learning_rate=0.001):
     model = tf.keras.Sequential([
         tf.keras.layers.Rescaling(1./255, input_shape=(IMG_SIZE[0], IMG_SIZE[1], 3)),
@@ -54,7 +50,6 @@ def plot_history(history, parameter_name, value):
     plt.title('Perda (Loss)')
     plt.show()
 
-# --- CARREGAMENTO DO DATASET ---
 train_ds = tf.keras.utils.image_dataset_from_directory(
     base_dir, validation_split=VALIDATION_SPLIT, subset="training",
     seed=SEED, image_size=IMG_SIZE, batch_size=FIXED_BATCH_SIZE, label_mode='int'
@@ -68,8 +63,7 @@ AUTOTUNE = tf.data.AUTOTUNE
 train_ds = train_ds.cache().prefetch(buffer_size=AUTOTUNE)
 validation_ds = validation_ds.cache().prefetch(buffer_size=AUTOTUNE)
 
-# --- LOOP DE AUTO-TUNING ---
-learning_rates_to_test = [0.01, 0.001, 0.0001]
+learning_rates_to_test = [0.01, 0.001, 0.0001] # Teste com taxa de aprendizagem variando tamanho dos passos
 
 for lr in learning_rates_to_test:
     print("-" * 50)

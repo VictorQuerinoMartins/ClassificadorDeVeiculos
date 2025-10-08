@@ -1,24 +1,19 @@
-# -*- coding: utf-8 -*-
-# ARQUIVO 3: ENCONTRANDO O NÚMERO IDEAL DE ÉPOCAS
-
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-# --- CONFIGURAÇÃO BASE ---
 base_dir = r'C:\Users\yguin\OneDrive\Documentos\GitHub\CNN\CNNs\ClassificadorDeVeiculos\dataset'
 if not os.path.exists(base_dir):
     raise FileNotFoundError(f"ERRO: O caminho '{base_dir}' nao foi encontrado.")
 
-IMG_SIZE = (96, 96) # <<< MUDANÇA AQUI
+IMG_SIZE = (96, 96)
 VALIDATION_SPLIT = 0.2
 SEED = 123
 BEST_LR = 0.001
 BEST_BATCH_SIZE = 16
-LONG_EPOCHS = 50
+LONG_EPOCHS = 50 # Teste de épocas
 
-# --- FUNÇÕES AUXILIARES ---
 def create_model(num_classes, learning_rate=0.001):
     model = tf.keras.Sequential([
         tf.keras.layers.Rescaling(1./255, input_shape=(IMG_SIZE[0], IMG_SIZE[1], 3)),
@@ -53,7 +48,6 @@ def plot_history(history, title):
     plt.title('Perda (Loss)')
     plt.show()
 
-# --- CARREGAMENTO DO DATASET ---
 train_ds = tf.keras.utils.image_dataset_from_directory(
     base_dir, validation_split=VALIDATION_SPLIT, subset="training",
     seed=SEED, image_size=IMG_SIZE, batch_size=BEST_BATCH_SIZE, label_mode='int'
@@ -70,7 +64,6 @@ AUTOTUNE = tf.data.AUTOTUNE
 train_ds = train_ds.cache().prefetch(buffer_size=AUTOTUNE)
 validation_ds = validation_ds.cache().prefetch(buffer_size=AUTOTUNE)
 
-# --- TREINAMENTO FINAL ---
 print("-" * 50)
 print(f"INICIANDO TREINO LONGO PARA ACHAR O PONTO DE PARADA IDEAL")
 print(f"Usando LR={BEST_LR} e Batch Size={BEST_BATCH_SIZE}")

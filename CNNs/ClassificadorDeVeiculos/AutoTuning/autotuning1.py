@@ -1,4 +1,3 @@
-# TESTANDO O TAMANHO DO LOTE (BATCH SIZE)
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
@@ -10,7 +9,7 @@ if not os.path.exists(base_dir):
     raise FileNotFoundError(f"ERRO: O caminho '{base_dir}' nao foi encontrado.")
 
 IMG_SIZE = (96, 96) 
-BATCH_SIZE = 32
+BATCH_SIZE = 32 #Teste de tamanho de lote
 VALIDATION_SPLIT = 0.2
 SEED = 123
 BEST_LR = 0.001
@@ -50,7 +49,6 @@ def plot_history(history, parameter_name, value):
     plt.title('Perda (Loss)')
     plt.show()
 
-# --- LOOP DE AUTO-TUNING ---
 batch_sizes_to_test = [16, 32, 64]
 
 for bs in batch_sizes_to_test:
@@ -58,7 +56,6 @@ for bs in batch_sizes_to_test:
     print(f"INICIANDO TESTE COM BATCH SIZE: {bs}")
     print("-" * 50)
     
-    # Recarrega os datasets com o novo batch_size
     train_ds = tf.keras.utils.image_dataset_from_directory(
         base_dir, validation_split=VALIDATION_SPLIT, subset="training",
         seed=SEED, image_size=IMG_SIZE, batch_size=bs, label_mode='int'
@@ -71,7 +68,6 @@ for bs in batch_sizes_to_test:
     class_names = train_ds.class_names
     NUM_CLASSES = len(class_names)
     
-    # Otimiza os datasets novamente
     AUTOTUNE = tf.data.AUTOTUNE
     train_ds = train_ds.cache().prefetch(buffer_size=AUTOTUNE)
     validation_ds = validation_ds.cache().prefetch(buffer_size=AUTOTUNE)

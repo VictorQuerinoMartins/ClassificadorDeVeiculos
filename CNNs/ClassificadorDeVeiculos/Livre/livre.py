@@ -36,25 +36,21 @@ def create_free_model(num_classes, learning_rate):
     model = tf.keras.Sequential([
         tf.keras.layers.Rescaling(1./255, input_shape=(IMG_SIZE[0], IMG_SIZE[1], 3)),
         
-        # Bloco 1: Duas camadas de convolução
-        tf.keras.layers.Conv2D(32, (3, 3), padding='same', activation='relu'),
-        tf.keras.layers.Conv2D(32, (3, 3), padding='same', activation='relu'),
-        tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
+        tf.keras.layers.Conv2D(32, (3, 3), padding='same', activation='relu'),  #  Extrai 32 caaracteristicas
+        tf.keras.layers.Conv2D(32, (3, 3), padding='same', activation='relu'),  # Aprofunda a extracao de caracteristicas
+        tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),                         # Reduz o tamanho da imagem
         
-        # Bloco 2: Mais duas camadas de convolução com mais filtros
-        tf.keras.layers.Conv2D(64, (3, 3), padding='same', activation='relu'),
-        tf.keras.layers.Conv2D(64, (3, 3), padding='same', activation='relu'),
-        tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
+        tf.keras.layers.Conv2D(64, (3, 3), padding='same', activation='relu'),  # 64 filtros para caracteristicas mais complexas
+        tf.keras.layers.Conv2D(64, (3, 3), padding='same', activation='relu'),  # Aprofunda a extracao
+        tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),                         # Reduz o tamanho denovo
 
-        # Bloco 3: Uma camada final para aprofundar ainda mais
-        tf.keras.layers.Conv2D(128, (3, 3), padding='same', activation='relu'),
-        tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
+        tf.keras.layers.Conv2D(128, (3, 3), padding='same', activation='relu'),           # 128 filtros para caracteristicas complexas
+        tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),                                  # Reduz o tamanho final
         
-        # Parte classificadora (totalmente conectada)
-        tf.keras.layers.Flatten(),
-        tf.keras.layers.Dense(256, activation='relu'),
-        tf.keras.layers.Dropout(0.5), # Dropout para regularização
-        tf.keras.layers.Dense(num_classes, activation='softmax')
+        tf.keras.layers.Flatten(),                                                       # Transforma a matriz em um vetor 
+        tf.keras.layers.Dense(256, activation='relu'),                                   # 256 neurônios para combinar as caracteristicas
+        tf.keras.layers.Dropout(0.5),                                                    # Zera 50% dos neurônios para evitar overfitting
+        tf.keras.layers.Dense(num_classes, activation='softmax')                         # Probabilidade para cada classe (Carro, Caminhao, Van)
     ])
     
     optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
@@ -69,17 +65,17 @@ def plot_history(history, title, final_accuracy):
     epochs_range = range(len(acc))
 
     plt.figure(figsize=(14, 6))
-    plt.suptitle(f"{title}\nAcurácia Final de Validação: {final_accuracy*100:.2f}%", fontsize=16)
+    plt.suptitle(f"{title}\nAcurdacia Final de Validacao: {final_accuracy*100:.2f}%", fontsize=16)
     
     plt.subplot(1, 2, 1)
-    plt.plot(epochs_range, acc, label='Acurácia de Treino')
-    plt.plot(epochs_range, val_acc, label='Acurácia de Validação')
+    plt.plot(epochs_range, acc, label='Acurdacia de Treino')
+    plt.plot(epochs_range, val_acc, label='Acurdacia de Validacao')
     plt.legend(loc='lower right')
-    plt.title('Acurácia')
+    plt.title('Acurdacia')
     
     plt.subplot(1, 2, 2)
     plt.plot(epochs_range, loss, label='Perda de Treino')
-    plt.plot(epochs_range, val_loss, label='Perda de Validação')
+    plt.plot(epochs_range, val_loss, label='Perda de Validacao')
     plt.legend(loc='upper right')
     plt.title('Perda (Loss)')
     plt.show()
@@ -102,13 +98,13 @@ print("Treinamento finalizado!")
 
 final_loss, final_accuracy = model.evaluate(validation_ds, verbose=0)
 print("-" * 30)
-print(f"Acurácia Final de Validação: {final_accuracy:.4f} (ou {final_accuracy*100:.2f}%)")
-print(f"Perda Final de Validação:   {final_loss:.4f}")
+print(f"Acurdacia Final de Validacao: {final_accuracy:.4f} (ou {final_accuracy*100:.2f}%)")
+print(f"Perda Final de Validacao:   {final_loss:.4f}")
 print("-" * 30)
 
 plot_history(history, "Resultados do Modelo Livre", final_accuracy)
 
-print("\nGerando a Matriz de Confusão...")
+print("\nGerando a Matriz de Confusao...")
 y_true = []
 y_pred = []
 for images, labels in validation_ds:
@@ -121,5 +117,5 @@ disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=class_names)
 
 fig, ax = plt.subplots(figsize=(8, 6))
 disp.plot(cmap=plt.cm.Blues, ax=ax, xticks_rotation=45)
-ax.set_title(f"Matriz de Confusão - Modelo Livre\nAcurácia Final: {final_accuracy*100:.2f}%")
+ax.set_title(f"Matriz de Confusao - Modelo Livre\nAcurdacia Final: {final_accuracy*100:.2f}%")
 plt.show()
